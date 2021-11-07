@@ -1,0 +1,102 @@
+#include <iostream>
+using namespace std;
+class Node{
+    public:
+    int data;
+    Node* next;
+};
+int calcSize(Node* head){
+    int size=0;
+    while(head!=NULL){
+        size++;
+        head=head->next;
+    }
+    return size;
+}
+void insertStart(Node* *head,int data){
+    Node* newNode=new Node();
+    newNode->data=data;
+    newNode->next=*head;
+    *head=newNode;
+}
+void insertEnd(Node* *head,int data){
+    Node* newNode=new Node();
+    newNode->data=data;
+    newNode->next=NULL;
+    if(*head==NULL)
+     *head=newNode;
+    Node* temp=*head;
+    while(temp->next!=NULL){
+        temp=temp->next;
+    }
+    temp->next=newNode;
+}
+/*void insertPosition(int pos,Node* *head,int data){
+    int size=calcSize(*head);
+    if(pos<1 || pos>size ){
+        cout<<"Pls insert valid Position";
+    }
+    else{
+        Node* newNode=new Node();
+        newNode->data=data;
+        Node* temp=*head;
+        for(int i=2;i<=pos-1;i++){
+            temp=temp->next;
+        }
+        newNode->next=temp->next;
+        temp->next=newNode;
+    }
+    
+}*/
+void insertPosition(int pos, int data, Node ** head) {
+    int size = calcSize( * head);
+
+    //If pos is 1 then should use insertStart method
+    //If pos is less than or equal to 0 then can't enter at all
+    //If pos is greater than size then bufferbound issue
+    if (pos < 1 || size < pos) {
+        cout<<("Can't insert it is not a valid position\n");
+
+    } 
+    else {
+        Node * temp = * head;
+        Node * newNode = new Node();
+
+        newNode -> data = data;
+        newNode -> next = NULL;
+
+        while (--pos) {
+            temp = temp -> next;
+        }
+        //(25)->next = 10 as 12->next is 10 
+        newNode -> next = temp -> next;
+        // (12)->next = 25
+        temp -> next = newNode;
+        //new node added in b/w 12 and 10
+    }
+}
+
+void display(Node* *head){
+    Node* temp=*head;
+    while(temp!=NULL){
+        cout<<temp->data<<"->";
+        temp=temp->next;
+    }
+    cout<<"NULL";
+}
+int main() {
+    // Write C++ code here
+    Node* head=NULL;
+    insertStart(&head,12);
+    insertStart(&head,13);
+    insertStart(&head,15);
+    
+    insertEnd(&head,18);
+    insertEnd(&head,20);
+    
+    insertPosition(7,30,&head);
+    
+    display(&head);
+
+    return 0;
+}
